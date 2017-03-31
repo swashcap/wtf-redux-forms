@@ -1,7 +1,7 @@
 export const RECIPES_REQUEST = 'RECIPES_REQUEST';
 export const RECIPES_SUCCESS = 'RECIPES_SUCCESS';
 
-export const loadRecipes = () => (dispatch) => {
+export const fetchRecipes = () => (dispatch) => {
   dispatch({
     type: RECIPES_REQUEST,
   });
@@ -10,23 +10,23 @@ export const loadRecipes = () => (dispatch) => {
   setTimeout(() => {
     dispatch({
       payload: [{
-        id: 100,
+        id: '100',
         inputs: [],
         name: 'Pies',
         summary: 'Delicious pastry focused on the filling.',
       }, {
-        id: 101,
+        id: '101',
         inputs: [],
         name: 'Stir Fry',
         summary: 'Greased vegetables and meats served over noodles or rice.',
       }, {
-        id: 102,
+        id: '102',
         inputs: [],
         name: 'Sandwich',
         summary: 'Put it between two slices of bread. Sandwich!'
       }],
       type: RECIPES_SUCCESS,
     });
-  }, 250);
+  }, 500);
 };
 
