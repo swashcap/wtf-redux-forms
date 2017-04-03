@@ -5,49 +5,57 @@ import IngredientsField from './IngredientsField';
 import NumberField from './NumberField';
 import TextField from './TextField';
 
-export default function RecipeInputsField({ inputs, fields }) {
-  const recipeInputs = Array.isArray(inputs) && inputs.length ?
-    (
-      <ul>
-        {fields.map((name, index) => {
-          const fieldProps = Object.assign({ name }, inputs[index]);
-          let component;
+export default function RecipeInputsField({ recipeInputs, fields }) {
+  const inputs = Array.isArray(recipeInputs) && recipeInputs.length ?
+    fields.map((name, index) => {
+      const recipeInput = recipeInputs[index];
 
-          // redux-form uses `.inputs` as props. Don't squash!
-          fieldProps.recipeInputs = fieldProps.inputs;
-          delete fieldProps.inputs;
-          // debugger;
-
-          if (fieldProps.type === 'number') {
-            component = <Field component={NumberField} {...fieldProps} />;
-          // } else if (fieldProps.type === 'ingredients') {
-          //  component = (
-          //    <FieldArray
-          //      component={IngredientsField}
-          //      {...fieldProps}
-          //    />
-          //  );*/}
-          } else {
-            component = <Field component={TextField} {...fieldProps} />;
-          }
-
-          return <li key={index}>{component}</li>;
-        })}
-      </ul>
-    ) :
-    (
-      <span>Loading…</span>
-    );
+      if (recipeInput.type === 'number') {
+        return (
+          <li key={index}>
+            <Field
+              component={NumberField}
+              name={name}
+              {...recipeInput}
+            />
+          </li>
+        );
+      } else if (recipeInput.type === 'ingredients') {
+        return (
+          <li key={index}>
+            <FieldArray
+              component={IngredientsField}
+              name={name}
+              {...recipeInput}
+            />
+          </li>
+        );
+      } else {
+        return (
+          <li key={index}>
+            <Field
+              component={TextField}
+              name={name}
+              {...recipeInput}
+            />
+          </li>
+        );
+      }
+    }) :
+    <li>Loading…</li>;
 
   return (
     <fieldset className="RecipeInputsField">
       <legend>Recipe Inputs</legend>
-      {recipeInputs}
+      <ul>
+        {inputs}
+      </ul>
     </fieldset>
   );
 }
 
 RecipeInputsField.propTypes = {
   fields: PropTypes.object.isRequired,
+  recipeInputs: PropTypes.array,
 };
 

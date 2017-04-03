@@ -19,7 +19,7 @@ class RecipesForm extends Component {
   }
 
   render() {
-    const { inputs, recipes } = this.props;
+    const { pristine, recipeInputs, recipes, reset } = this.props;
 
     return (
       <form
@@ -47,8 +47,8 @@ class RecipesForm extends Component {
 
         <FieldArray
           component={RecipeInputsField}
-          inputs={inputs}
-          name="inputs"
+          recipeInputs={recipeInputs}
+          name="recipeInputs"
         />
 
         <button
@@ -59,6 +59,8 @@ class RecipesForm extends Component {
         </button>
         <button
           className="pure-button"
+          disabled={pristine}
+          onClick={reset}
           type="reset"
         >
           Cancel
@@ -70,7 +72,10 @@ class RecipesForm extends Component {
 
 RecipesForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  inputs: PropTypes.array.isRequired,
+  recipeInputs: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['ingredients', 'number']).isRequired,
+  })),
   recipes: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,

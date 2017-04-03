@@ -15,11 +15,14 @@ class App extends Component {
   render() {
     const { recipes } = this.props;
 
-    const inputs = recipes.reduce((memo, { id, inputs }) => (
-      id === DEFAULT_TYPE_ID ? inputs : memo
-    ), []);
+    const selectedRecipe = recipes.find(({ id }) => id === DEFAULT_TYPE_ID);
+    const recipeInputs = selectedRecipe ?
+      selectedRecipe.recipeInputs :
+      [];
     const initialValues = {
-      inputs,
+      recipeInputs: recipeInputs.map((recipeInput) => (
+        'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
+      )),
       type: DEFAULT_TYPE_ID,
     };
 
@@ -31,7 +34,7 @@ class App extends Component {
         <main role="main">
           <RecipesForm
             initialValues={initialValues}
-            inputs={inputs}
+            recipeInputs={recipeInputs}
             recipes={recipes}
           />
         </main>

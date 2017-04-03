@@ -4,32 +4,37 @@ import { Field } from 'redux-form';
 import TextField from './TextField'
 
 export default function IngredientsField({ fields }) {
-  /*
-      {fields.map((name, index) => (
-        <div className="pure-g" key={index}>
-          <Field
-            className="pure-u-1-2"
-            component={TextField}
-            label="Oven"
-            name={`${name}.oven`}
-          />
-          <Field
-            className="pure-u-1-2"
-            component={TextField}
-            label="Chill"
-            name={`${name}.chill`}
-          />
-        </div>
-      ))}
-    */
-
   return (
     <fieldset>
-      <ul>
-        {fields.map((name, index) => {
-          return <li key={index}>{index}</li>;
-        })}
-      </ul>
+      <ol>
+        {fields.map((name, index) => (
+          <li className="pure-g" key={index}>
+            <div className="pure-u-2-5">
+              <Field
+                component={TextField}
+                label="Oven"
+                name={`${name}.oven`}
+              />
+            </div>
+            <div className="pure-u-2-5">
+              <Field
+                component={TextField}
+                label="Chill"
+                name={`${name}.chill`}
+              />
+            </div>
+            <div className="pure-u-1-5">
+              <button
+                className="pure-button button-error"
+                onClick={() => fields.remove(index)}
+                type="button"
+              >
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
+      </ol>
       <button
         className="pure-button"
         onClick={() => fields.push({})}
