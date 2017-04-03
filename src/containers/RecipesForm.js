@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form';
 
 import { fetchRecipes } from '../actions/';
-import RecipeSelectorField from './RecipeSelectorField';
-import RecipeInputsField from './RecipeInputsField';
-import TextField from './TextField';
-import TextareaField from './TextareaField';
+import RecipeSelectorField from '../components/RecipeSelectorField';
+import RecipeInputsField from '../components/RecipeInputsField';
+import TextField from '../components/TextField';
+import TextareaField from '../components/TextareaField';
 
 const DEFAULT_TYPE_ID = '100';
 const FORM_NAME = 'recipes';

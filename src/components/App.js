@@ -1,5 +1,5 @@
 import React from 'react';
-import RecipesForm from '../components/RecipesForm';
+import RecipesForm from '../containers/RecipesForm';
 
 import './App.css';
 
