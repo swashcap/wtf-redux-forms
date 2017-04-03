@@ -1,0 +1,11 @@
+.RecipeInputsField > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.RecipeInputsField > ul > li {
+  padding: .5rem 1rem;
+}
+.RecipeInputsField > ul > li:nth-child(odd) {
+  background: #f6f6f6;
+}

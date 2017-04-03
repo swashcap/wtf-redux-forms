@@ -3,9 +3,11 @@ import { Field } from 'redux-form';
 
 import TextField from './TextField'
 
+import './IngredientsField.css';
+
 export default function IngredientsField({ fields }) {
   return (
-    <fieldset>
+    <fieldset className="IngredientsField">
       <ol>
         {fields.map((name, index) => (
           <li className="pure-g" key={index}>

@@ -5,6 +5,8 @@ import IngredientsField from './IngredientsField';
 import NumberField from './NumberField';
 import TextField from './TextField';
 
+import './RecipeInputsField.css';
+
 export default function RecipeInputsField({ recipeInputs, fields }) {
   const inputs = Array.isArray(recipeInputs) && recipeInputs.length ?
     fields.map((name, index) => {

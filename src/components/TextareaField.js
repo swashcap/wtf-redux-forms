@@ -3,8 +3,8 @@ import React, { PropTypes } from 'react';
 export default function TextareaField({ input, label, meta }) {
   return (
     <div className="pure-control-group">
-      <label htmlFor={input.id}>{label}</label>
-      <textarea {...input}></textarea>
+      <label htmlFor={input.name}>{label}</label>
+      <textarea id={input.name} {...input}></textarea>
     </div>
   );
 }
