@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Field } from 'redux-form';
 
+import SelectField from './SelectField'
 import TextField from './TextField'
 
 import './IngredientsField.css';
@@ -14,16 +15,19 @@ export default function IngredientsField({ fields }) {
             <div className="pure-u-2-5">
               <Field
                 component={TextField}
-                label="Oven"
-                name={`${name}.oven`}
+                label="Name"
+                name={`${name}.name`}
               />
             </div>
             <div className="pure-u-2-5">
               <Field
-                component={TextField}
-                label="Chill"
-                name={`${name}.chill`}
-              />
+                component={SelectField}
+                label="Mode"
+                name={`${name}.mode`}
+              >
+                <option value="boolean">True/False</option>
+                <option value="number">Number</option>
+              </Field>
             </div>
             <div className="pure-u-1-5">
               <button
@@ -37,13 +41,18 @@ export default function IngredientsField({ fields }) {
           </li>
         ))}
       </ol>
-      <button
-        className="pure-button"
-        onClick={() => fields.push({})}
-        type="button"
-      >
-        Add
-      </button>
+      <div className="pure-g">
+        <div className="pure-u-4-5"></div>
+        <div className="pure-u-1-5">
+          <button
+            className="pure-button pure-button-add"
+            onClick={() => fields.push({})}
+            type="button"
+          >
+            Add
+          </button>
+        </div>
+      </div>
     </fieldset>
   );
 }

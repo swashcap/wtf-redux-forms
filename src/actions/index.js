@@ -16,7 +16,7 @@ export const fetchRecipes = () => (dispatch) => {
           label: 'Bake temperature',
           type: 'number',
         }, {
-          label: 'Ingredients 1',
+          label: 'Ingredients',
           type: 'ingredients',
         }],
         name: 'Pies',
@@ -24,8 +24,16 @@ export const fetchRecipes = () => (dispatch) => {
       }, {
         id: '101',
         recipeInputs: [{
-          label: 'Ingredients 2',
+          defaultValue: [{
+            mode: 'boolean',
+            name: 'Microwave',
+          }],
+          label: 'Ingredients',
           type: 'ingredients',
+        }, {
+          defaultValue: 0,
+          label: 'Calories',
+          type: 'number',
         }],
         name: 'Stir Fry',
         summary: 'Greased vegetables and meats served over noodles or rice.',
@@ -36,7 +44,7 @@ export const fetchRecipes = () => (dispatch) => {
           label: 'Spicy chilies count',
           type: 'number',
         }, {
-          label: 'Ingredients 3',
+          label: 'Ingredients',
           type: 'ingredients',
         }],
         name: 'Sandwich',

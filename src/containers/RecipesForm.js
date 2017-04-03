@@ -1,15 +1,34 @@
 import React, { Component, PropTypes } from 'react';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form';
 
+import { fetchRecipes } from '../actions/';
 import RecipeSelectorField from './RecipeSelectorField';
 import RecipeInputsField from './RecipeInputsField';
 import TextField from './TextField';
 import TextareaField from './TextareaField';
 
+const DEFAULT_TYPE_ID = '100';
+const FORM_NAME = 'recipes';
+
 class RecipesForm extends Component {
   constructor(props) {
     super(props);
+    this.onRecipeTypeChange = this.onRecipeTypeChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.dispatch(fetchRecipes());
+  }
+
+  onRecipeTypeChange(event, newValue, previousValue) {
+    const { array: { removeAll } } = this.props;
+
+    // Clear recipe inputs when the recipe type changes
+    if (newValue && newValue !== previousValue) {
+      removeAll('recipeInputs');
+    }
   }
 
   onSubmit(values) {
@@ -42,6 +61,7 @@ class RecipesForm extends Component {
           component={RecipeSelectorField}
           label="Recipe type"
           name="type"
+          onChange={this.onRecipeTypeChange}
           recipes={recipes}
         />
 
@@ -71,6 +91,7 @@ class RecipesForm extends Component {
 }
 
 RecipesForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   recipeInputs: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
@@ -83,8 +104,34 @@ RecipesForm.propTypes = {
   })).isRequired,
 };
 
-export default reduxForm({
+const selector = formValueSelector(FORM_NAME);
+
+const mapStateToProps = (state) => {
+  const { recipes } = state;
+  const {
+    recipeInputs: recipeInputsValues,
+    type,
+  } = selector(state, 'recipeInputs', 'type');
+  const selectedType = type || DEFAULT_TYPE_ID;
+  const selectedRecipe = recipes.find(({ id }) => id === selectedType);
+  const recipeInputs = selectedRecipe ?
+    selectedRecipe.recipeInputs :
+    [];
+
+  return {
+    initialValues: {
+      recipeInputs: recipeInputs.map((recipeInput) => (
+        'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
+      )),
+      type: selectedType,
+    },
+    recipeInputs,
+    recipes,
+  };
+};
+
+export default connect(mapStateToProps)(reduxForm({
   enableReinitialize: true,
-  form: 'recipes',
-})(RecipesForm);
+  form: FORM_NAME,
+})(RecipesForm));
 
