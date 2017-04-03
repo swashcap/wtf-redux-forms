@@ -1,0 +1,53 @@
+.RecipeSelectorField {
+  --transition-duration: 150ms;
+}
+
+.RecipeSelectorField label {
+  cursor: pointer;
+  padding: .5rem 1rem .5rem 3rem;
+  position: relative;
+}
+
+.RecipeSelectorField label input {
+  /* TODO: Use a screen reader-friendly class to hide */
+  display: none;
+}
+
+.RecipeSelectorField label input:checked + strong:before {
+  border-color: black;
+}
+.RecipeSelectorField label input:checked + strong:after {
+  opacity: 1;
+}
+
+.RecipeSelectorField label strong {
+  display: block;
+  font-size: 115%;
+  margin: 0 0 .25rem;
+}
+.RecipeSelectorField label strong:before {
+  border-radius: 100%;
+  border: 2px solid gray;
+  content: '';
+  display: block;
+  height: 1.2rem;
+  left: .8rem;
+  position: absolute;
+  top: .5rem;
+  transition: border-color var(--transition-duration);
+  width: 1.2rem;
+}
+.RecipeSelectorField label strong:after {
+  background: black;
+  border-radius: 100%;
+  content: '';
+  display: block;
+  height: .8rem;
+  left: calc(.8rem + .35rem);
+  opacity: 0;
+  position: absolute;
+  transition: opacity var(--transition-duration);
+  top: calc(.5rem + .35rem);
+  width: .8rem;
+}
+

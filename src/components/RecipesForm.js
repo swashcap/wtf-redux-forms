@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
-import RecipeSelectorField from './RecipeSelectorField'
+import RecipeSelectorField from './RecipeSelectorField';
+import RecipeInputsField from './RecipeInputsField';
 import TextField from './TextField';
 import TextareaField from './TextareaField';
 
@@ -18,7 +19,7 @@ class RecipesForm extends Component {
   }
 
   render() {
-    const { recipes } = this.props;
+    const { inputs, recipes } = this.props;
 
     return (
       <form
@@ -28,19 +29,26 @@ class RecipesForm extends Component {
         <Field
           component={TextField}
           label="Name"
-          name="recipeName"
+          name="name"
         />
 
         <Field
           component={TextareaField}
           label="Description"
-          name="recipeDescription"
+          name="description"
         />
 
         <Field
           component={RecipeSelectorField}
           label="Recipe type"
-          name="recipeType"
+          name="type"
+          recipes={recipes}
+        />
+
+        <FieldArray
+          component={RecipeInputsField}
+          inputs={inputs}
+          name="inputs"
         />
 
         <button
@@ -62,15 +70,16 @@ class RecipesForm extends Component {
 
 RecipesForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  inputs: PropTypes.array.isRequired,
   recipes: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    inputs: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     summary: PropTypes.string.isRequired,
   })).isRequired,
 };
 
 export default reduxForm({
+  enableReinitialize: true,
   form: 'recipes',
 })(RecipesForm);
 

@@ -11,17 +11,34 @@ export const fetchRecipes = () => (dispatch) => {
     dispatch({
       payload: [{
         id: '100',
-        inputs: [],
+        recipeInputs: [{
+          defaultValue: 425,
+          label: 'Bake temperature',
+          type: 'number',
+        }, {
+          label: 'Ingredients 1',
+          type: 'ingredients',
+        }],
         name: 'Pies',
         summary: 'Delicious pastry focused on the filling.',
       }, {
         id: '101',
-        inputs: [],
+        recipeInputs: [{
+          label: 'Ingredients 2',
+          type: 'ingredients',
+        }],
         name: 'Stir Fry',
         summary: 'Greased vegetables and meats served over noodles or rice.',
       }, {
         id: '102',
-        inputs: [],
+        recipeInputs: [{
+          defaultValue: 0,
+          label: 'Spicy chilies count',
+          type: 'number',
+        }, {
+          label: 'Ingredients 3',
+          type: 'ingredients',
+        }],
         name: 'Sandwich',
         summary: 'Put it between two slices of bread. Sandwich!'
       }],

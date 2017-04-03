@@ -1,12 +1,26 @@
 import React, { PropTypes } from 'react';
+import './RecipeSelectorField.css';
 
-export default function RecipeSelectorField({ input, meta }) {
+export default function RecipeSelectorField({ input, meta, recipes }) {
   return (
-    <fieldset>
+    <fieldset className="RecipeSelectorField">
       <legend>Recipe Type</legend>
-      <label className="pure-radio" htmlFor={input.id}>
-        <input type="radio" />
-      </label>
+      {recipes.map((recipe, index) => (
+        <label
+          className="pure-radio"
+          htmlFor={`recipe-${recipe.id}`}
+          key={index}
+        >
+          <input
+            checked={input.value === recipe.id}
+            id={`recipe-${recipe.id}`}
+            onChange={() => input.onChange(recipe.id)}
+            type="radio"
+          />
+          <strong>{recipe.name}</strong>
+          <span>{recipe.summary}</span>
+        </label>
+      ))}
     </fieldset>
   );
 }
