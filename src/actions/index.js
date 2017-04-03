@@ -1,4 +1,7 @@
+import uniqueId from 'lodash.uniqueid';
+
 export const RECIPES_REQUEST = 'RECIPES_REQUEST';
+export const RECIPES_SAVE = 'RECIPES_SAVE';
 export const RECIPES_SUCCESS = 'RECIPES_SUCCESS';
 
 export const fetchRecipes = () => (dispatch) => {
@@ -10,7 +13,7 @@ export const fetchRecipes = () => (dispatch) => {
   setTimeout(() => {
     dispatch({
       payload: [{
-        id: '100',
+        id: uniqueId(),
         recipeInputs: [{
           defaultValue: 425,
           label: 'Bake temperature',
@@ -22,7 +25,7 @@ export const fetchRecipes = () => (dispatch) => {
         name: 'Pies',
         summary: 'Delicious pastry focused on the filling.',
       }, {
-        id: '101',
+        id: uniqueId(),
         recipeInputs: [{
           defaultValue: [{
             mode: 'boolean',
@@ -38,7 +41,7 @@ export const fetchRecipes = () => (dispatch) => {
         name: 'Stir Fry',
         summary: 'Greased vegetables and meats served over noodles or rice.',
       }, {
-        id: '102',
+        id: uniqueId(),
         recipeInputs: [{
           defaultValue: 0,
           label: 'Spicy chilies count',
@@ -53,5 +56,12 @@ export const fetchRecipes = () => (dispatch) => {
       type: RECIPES_SUCCESS,
     });
   }, 500);
+};
+
+export const saveRecipe = (recipe) => {
+  return {
+    payload: recipe,
+    type: RECIPES_SAVE,
+  };
 };
 

@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form';
+import uniqueId from 'lodash.uniqueid';
 
-import { fetchRecipes } from '../actions/';
+import { fetchRecipes, saveRecipe } from '../actions/';
 import RecipeSelectorField from '../components/RecipeSelectorField';
 import RecipeInputsField from '../components/RecipeInputsField';
 import TextField from '../components/TextField';
@@ -15,7 +16,6 @@ class RecipesForm extends Component {
   constructor(props) {
     super(props);
     this.onRecipeTypeChange = this.onRecipeTypeChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -31,19 +31,13 @@ class RecipesForm extends Component {
     }
   }
 
-  onSubmit(values) {
-    const { handleSubmit } = this.props;
-    console.log(values);
-    handleSubmit(values);
-  }
-
   render() {
-    const { pristine, recipeInputs, recipes, reset } = this.props;
+    const { handleSubmit, pristine, recipeInputs, recipes, reset } = this.props;
 
     return (
       <form
         className="pure-form pure-form-stacked"
-        onSubmit={this.onSubmit}
+        onSubmit={handleSubmit}
       >
         <Field
           component={TextField}
@@ -112,7 +106,7 @@ const mapStateToProps = (state) => {
     recipeInputs: recipeInputsValues,
     type,
   } = selector(state, 'recipeInputs', 'type');
-  const selectedType = type || DEFAULT_TYPE_ID;
+  const selectedType = type || (recipes[0] || {}).id;
   const selectedRecipe = recipes.find(({ id }) => id === selectedType);
   const recipeInputs = selectedRecipe ?
     selectedRecipe.recipeInputs :
@@ -133,5 +127,11 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(reduxForm({
   enableReinitialize: true,
   form: FORM_NAME,
+  onSubmit(values, dispatch, props) {
+    debugger;
+    dispatch(saveRecipe({
+      id: uniqueId(),
+    }));
+  },
 })(RecipesForm));
 
