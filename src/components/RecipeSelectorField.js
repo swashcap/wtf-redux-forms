@@ -4,7 +4,6 @@ import './RecipeSelectorField.css';
 export default function RecipeSelectorField({ input, meta, recipes }) {
   return (
     <fieldset className="RecipeSelectorField">
-      <legend>Recipe Type</legend>
       {recipes.map((recipe, index) => (
         <label
           className="pure-radio"
@@ -13,9 +12,11 @@ export default function RecipeSelectorField({ input, meta, recipes }) {
         >
           <input
             checked={input.value === recipe.id}
+            className="visuallyhidden"
             id={`recipe-${recipe.id}`}
             onChange={() => input.onChange(recipe.id)}
             type="radio"
+            value={index}
           />
           <strong>{recipe.name}</strong>
           <span>{recipe.summary}</span>

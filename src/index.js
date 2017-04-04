@@ -7,6 +7,7 @@ import configureStore from './store/configureStore';
 import Root from './containers/Root';
 
 import '../node_modules/purecss/build/pure.css';
+import './index.css';
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
