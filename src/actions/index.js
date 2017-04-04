@@ -24,7 +24,7 @@ const SEED_TYPES = [{
     label: 'Ingredients',
     type: 'ingredients',
   }, {
-    defaultValue: 0,
+    defaultValue: 1,
     label: 'Calories',
     type: 'number',
   }],
@@ -64,7 +64,7 @@ export const fetchTypes = () => (dispatch, getState) => {
 
 export const RECIPES_DELETE = 'RECIPES_DELETE';
 export const RECIPES_SAVE = 'RECIPES_SAVE';
-export const RECIPES_UPDATE = 'RECUPES_UPDATE';
+export const RECIPES_UPDATE = 'RECIPES_UPDATE';
 
 export const deleteRecipe = (id) => ({
   payload: id,
