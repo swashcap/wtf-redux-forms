@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form';
-import uniqueId from 'lodash.uniqueid';
+import get from 'lodash/get';
+import uniqueId from 'lodash/uniqueId';
+import { push } from 'react-router-redux';
 
-import { fetchRecipes, saveRecipe } from '../actions/';
-import RecipeSelectorField from '../components/RecipeSelectorField';
+import { saveRecipe, updateRecipe } from '../actions/';
+import RecipeTypesField from '../components/RecipeTypesField';
 import RecipeInputsField from '../components/RecipeInputsField';
 import TextField from '../components/TextField';
 import TextareaField from '../components/TextareaField';
@@ -19,10 +21,6 @@ class RecipesForm extends Component {
     this.onRecipeTypeChange = this.onRecipeTypeChange.bind(this);
   }
 
-  componentWillMount() {
-    this.props.dispatch(fetchRecipes());
-  }
-
   onRecipeTypeChange(event, newValue, previousValue) {
     const { array: { removeAll } } = this.props;
 
@@ -33,7 +31,17 @@ class RecipesForm extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, recipeInputs, recipes, reset } = this.props;
+    const {
+      handleSubmit,
+      params,
+      pristine,
+      recipeInputs,
+      recipes,
+      reset,
+      types,
+    } = this.props;
+
+    const submitText = params.id ? 'Update' : 'Save';
 
     return (
       <form
@@ -53,11 +61,11 @@ class RecipesForm extends Component {
         />
 
         <Field
-          component={RecipeSelectorField}
+          component={RecipeTypesField}
           label="Recipe type"
           name="type"
           onChange={this.onRecipeTypeChange}
-          recipes={recipes}
+          types={types}
         />
 
         <FieldArray
@@ -71,7 +79,7 @@ class RecipesForm extends Component {
             className="pure-button pure-button-primary"
             type="submit"
           >
-            Save
+            {submitText}
           </button>
           <button
             className="pure-button"
@@ -95,6 +103,11 @@ RecipesForm.propTypes = {
     type: PropTypes.oneOf(['ingredients', 'number']).isRequired,
   })),
   recipes: PropTypes.arrayOf(PropTypes.shape({
+    description: PropTypes.string,
+    id: PropTypes.string,
+    name: PropTypes.string,
+  })),
+  types: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     summary: PropTypes.string.isRequired,
@@ -103,27 +116,42 @@ RecipesForm.propTypes = {
 
 const selector = formValueSelector(FORM_NAME);
 
-const mapStateToProps = (state) => {
-  const { recipes } = state;
-  const {
-    recipeInputs: recipeInputsValues,
-    type,
-  } = selector(state, 'recipeInputs', 'type');
-  const selectedType = type || (recipes[0] || {}).id;
-  const selectedRecipe = recipes.find(({ id }) => id === selectedType);
-  const recipeInputs = selectedRecipe ?
-    selectedRecipe.recipeInputs :
-    [];
+const mapStateToProps = (
+  state,
+  {
+    params: {
+      id: recipeId,
+    },
+  }
+) => {
+  const { recipes, types } = state;
+  const formValues = selector(state, 'type');
+  const initialValues = recipeId && recipeId in recipes ?
+    recipes[recipeId] :
+    {};
+
+  if (!initialValues.type) {
+    initialValues.type = formValues && formValues.type ?
+      formValues.type :
+      '2'; // Default type id
+  }
+
+  const recipeInputs = get(
+    types.find(({ id }) => id === initialValues.type),
+    'recipeInputs',
+    []
+  );
+
+  if (!initialValues.recipeInputs) {
+    initialValues.recipeInputs = recipeInputs.map((recipeInput) => (
+      'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
+    ));
+  }
 
   return {
-    initialValues: {
-      recipeInputs: recipeInputs.map((recipeInput) => (
-        'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
-      )),
-      type: selectedType,
-    },
+    initialValues,
     recipeInputs,
-    recipes,
+    types,
   };
 };
 
@@ -131,10 +159,16 @@ export default connect(mapStateToProps)(reduxForm({
   enableReinitialize: true,
   form: FORM_NAME,
   onSubmit(values, dispatch, props) {
-    debugger;
-    dispatch(saveRecipe({
-      id: uniqueId(),
-    }));
+    const {
+      params: { id },
+    } = props;
+
+    if (id) {
+      dispatch(updateRecipe(Object.assign({ id }, values)));
+    } else {
+      dispatch(saveRecipe(values));
+    }
+    dispatch(push('/'));
   },
 })(RecipesForm));
 

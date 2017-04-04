@@ -1,11 +1,9 @@
-import uniqueId from 'lodash.uniqueid';
+export const TYPES_REQUEST = 'TYPES_REQUEST';
+export const TYPES_SAVE = 'TYPES_SAVE';
+export const TYPES_SUCCESS = 'TYPES_SUCCESS';
 
-export const RECIPES_REQUEST = 'RECIPES_REQUEST';
-export const RECIPES_SAVE = 'RECIPES_SAVE';
-export const RECIPES_SUCCESS = 'RECIPES_SUCCESS';
-
-const SEED_RECIPES = [{
-  id: uniqueId(),
+const SEED_TYPES = [{
+  id: '1',
   recipeInputs: [{
     defaultValue: 425,
     label: 'Bake temperature',
@@ -17,7 +15,7 @@ const SEED_RECIPES = [{
   name: 'Pies',
   summary: 'Delicious pastry focused on the filling.',
 }, {
-  id: uniqueId(),
+  id: '2',
   recipeInputs: [{
     defaultValue: [{
       mode: 'boolean',
@@ -33,7 +31,7 @@ const SEED_RECIPES = [{
   name: 'Stir Fry',
   summary: 'Greased vegetables and meats served over noodles or rice.',
 }, {
-  id: uniqueId(),
+  id: '3',
   recipeInputs: [{
     defaultValue: 0,
     label: 'Spicy chilies count',
@@ -46,24 +44,40 @@ const SEED_RECIPES = [{
   summary: 'Put it between two slices of bread. Sandwich!'
 }];
 
-export const fetchRecipes = () => (dispatch) => {
-  dispatch({
-    type: RECIPES_REQUEST,
-  });
+export const fetchTypes = () => (dispatch, getState) => {
+  const { types } = getState();
 
-  // Simulate async request for recipes
-  setTimeout(() => {
+  if (!types.length) {
     dispatch({
-      payload: SEED_RECIPES,
-      type: RECIPES_SUCCESS,
+      type: TYPES_REQUEST,
     });
-  }, 500);
+
+    // Simulate async request for recipes
+    setTimeout(() => {
+      dispatch({
+        payload: SEED_TYPES,
+        type: TYPES_SUCCESS,
+      });
+    }, 500);
+  }
 };
 
-export const saveRecipe = (recipe) => {
-  return {
-    payload: recipe,
-    type: RECIPES_SAVE,
-  };
-};
+export const RECIPES_DELETE = 'RECIPES_DELETE';
+export const RECIPES_SAVE = 'RECIPES_SAVE';
+export const RECIPES_UPDATE = 'RECUPES_UPDATE';
+
+export const deleteRecipe = (id) => ({
+  payload: id,
+  type: RECIPES_DELETE,
+});
+
+export const saveRecipe = (recipe) => ({
+  payload: recipe,
+  type: RECIPES_SAVE,
+});
+
+export const updateRecipe = (recipe) => ({
+  payload: recipe,
+  type: RECIPES_UPDATE,
+});
 

@@ -1,35 +1,35 @@
-.RecipeSelectorField {
+.RecipeTypesField {
   --inner-radius: .375rem;
   --outer-radius: .625rem;
   --transition-duration: 150ms;
 }
 
-.RecipeSelectorField label {
+.RecipeTypesField label {
   cursor: pointer;
   padding: .5rem 1rem .5rem 2.75rem;
   position: relative;
 }
 
-.RecipeSelectorField label input:checked ~ strong:before {
+.RecipeTypesField label input:checked ~ strong:before {
   border-color: black;
 }
-.RecipeSelectorField label input:checked ~ strong:after {
+.RecipeTypesField label input:checked ~ strong:after {
   opacity: 1;
 }
 
-.RecipeSelectorField label input:focus + strong:before,
-.RecipeSelectorField label input:focus:checked + strong:before {
+.RecipeTypesField label input:focus + strong:before,
+.RecipeTypesField label input:focus:checked + strong:before {
   border-color: #129fea;
 }
-.RecipeSelectorField label input:focus:checked + strong:after {
+.RecipeTypesField label input:focus:checked + strong:after {
   background: #129fea;
 }
 
-.RecipeSelectorField label strong {
+.RecipeTypesField label strong {
   display: block;
   margin: 0 0 .25rem;
 }
-.RecipeSelectorField label strong:before {
+.RecipeTypesField label strong:before {
   border-radius: 100%;
   border: 1px solid #ccc;
   box-shadow: inset 0 1px 3px #ddd;
@@ -42,7 +42,7 @@
   transition: border-color var(--transition-duration);
   width: calc(2 * var(--outer-radius));
 }
-.RecipeSelectorField label strong:after {
+.RecipeTypesField label strong:after {
   background: black;
   border-radius: 100%;
   content: '';

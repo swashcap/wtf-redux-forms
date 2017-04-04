@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import map from 'lodash/map';
 
 import './RecipesList.css';
 
-import { fetchRecipes } from '../actions';
+import { fetchTypes } from '../actions';
 
 class RecipesList extends Component {
   componentWillMount() {
-    this.props.dispatch(fetchRecipes());
+    this.props.dispatch(fetchTypes());
   }
   
   render() {
@@ -26,12 +27,12 @@ class RecipesList extends Component {
         <div className="pure-menu">
           <span className="pure-menu-heading">Saved Recipes</span>
           <ul className="pure-menu-list">
-            {recipes.map(({ id, name }, index) => {
+            {map(recipes, ({ name }, id) => {
               const className = 
                 `pure-menu-item ${id === activeId ? 'pure-menu-selected' : ''}`;
 
               return (
-                <li className={className} key={index}>
+                <li className={className} key={id}>
                   <Link
                     className="pure-menu-link"
                     to={`/edit/${id}`}
@@ -51,8 +52,7 @@ class RecipesList extends Component {
 RecipesList.propTypes = {
   activeId: PropTypes.string,
   dispatch: PropTypes.func.isRequired,
-  recipes: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
+  recipes: PropTypes.objectOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
   })).isRequired,
 };
