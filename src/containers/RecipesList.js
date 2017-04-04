@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import './RecipesList.css';
+
 import { fetchRecipes } from '../actions';
 
 class RecipesList extends Component {
@@ -14,7 +16,15 @@ class RecipesList extends Component {
 
     return (
       <nav className="RecipesList" role="navigation">
-        <div className="pure-menu pure-menu-horizontal">
+        <Link
+          className="pure-button"
+          title="Create a new recipe"
+          to="/new"
+        >
+          New Recipe
+        </Link>
+        <div className="pure-menu">
+          <span className="pure-menu-heading">Saved Recipes</span>
           <ul className="pure-menu-list">
             {recipes.map(({ id, name }, index) => {
               const className = 
@@ -33,13 +43,6 @@ class RecipesList extends Component {
             })}
           </ul>
         </div>
-        <Link
-          className="pure-button"
-          title="Create a new recipe"
-          to="/new"
-        >
-          New Recipe
-        </Link>
       </nav>
     );
   }

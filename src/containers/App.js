@@ -19,9 +19,13 @@ function App({ activeId, children }) {
           </Link>
         </h1>
       </header>
-      <main role="main">
-        <RecipesList activeId={activeId} />
-        {children}
+      <main className="pure-g" role="main">
+        <div className="pure-u-1-4">
+          <RecipesList activeId={activeId} />
+        </div>
+        <div className="pure-u-1-2">
+          {children}
+        </div>
       </main>
       <footer role="contentinfo">
         <small>A project for experimenting with dynamic <a href="http://redux-form.com/">Redux Form</a> forms. Source <a href="https://github.com/swashcap/wtf-redux-forms">on GitHub</a>.</small>

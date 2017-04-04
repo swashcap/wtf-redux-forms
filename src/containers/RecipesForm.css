@@ -1,0 +1,15 @@
+.RecipesForm > .pure-control-group input,
+.RecipesForm > .pure-control-group textarea {
+  width: 100%;
+}
+.RecipesForm > .pure-control-group,
+.RecipesForm > fieldset {
+  margin-bottom: 1rem;
+}
+.RecipesForm-button-group {
+  text-align: center;
+}
+.RecipesForm-button-group .pure-button {
+  margin-right: .25rem;
+  margin-left: .25rem;
+}

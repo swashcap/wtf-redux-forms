@@ -11,6 +11,17 @@ header[role=banner] {
   margin-bottom: 2rem;
   text-align: center;
 }
+header[role=banner] a {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+header[role=banner] a:active,
+header[role=banner] a:focus,
+header[role=banner] a:hover {
+  opacity: .8;
+  text-decoration: underline;
+}
 
 header[role=banner] h1 {
   margin: 0;

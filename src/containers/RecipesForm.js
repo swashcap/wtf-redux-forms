@@ -9,6 +9,8 @@ import RecipeInputsField from '../components/RecipeInputsField';
 import TextField from '../components/TextField';
 import TextareaField from '../components/TextareaField';
 
+import './RecipesForm.css';
+
 const FORM_NAME = 'recipes';
 
 class RecipesForm extends Component {
@@ -35,7 +37,7 @@ class RecipesForm extends Component {
 
     return (
       <form
-        className="pure-form pure-form-stacked"
+        className="RecipesForm pure-form pure-form-stacked"
         onSubmit={handleSubmit}
       >
         <Field
@@ -64,20 +66,22 @@ class RecipesForm extends Component {
           name="recipeInputs"
         />
 
-        <button
-          className="pure-button pure-button-primary"
-          type="submit"
-        >
-          Save
-        </button>
-        <button
-          className="pure-button"
-          disabled={pristine}
-          onClick={reset}
-          type="reset"
-        >
-          Cancel
-        </button>
+        <div className="RecipesForm-button-group">
+          <button
+            className="pure-button pure-button-primary"
+            type="submit"
+          >
+            Save
+          </button>
+          <button
+            className="pure-button"
+            disabled={pristine}
+            onClick={reset}
+            type="reset"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     );
   }

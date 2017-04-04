@@ -1,2 +1,6 @@
-.RecipesList {
+.RecipesList .pure-button {
+  margin-bottom: 1rem;
+}
+.RecipesList .pure-menu {
+  padding-right: 2rem;
 }
