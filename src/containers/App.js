@@ -1,17 +1,26 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 import RecipesList from '../containers/RecipesList';
 
 import './App.css';
 
-export default function App({ children }) {
+function App({ activeId, children }) {
   return (
     <div>
       <header role="banner">
-        <h1>WTF Redux Forms</h1>
+        <h1>
+          <Link
+            rel="home"
+            to="/"
+          >
+            WTF Redux Forms
+          </Link>
+        </h1>
       </header>
       <main role="main">
-        <RecipesList />
+        <RecipesList activeId={activeId} />
         {children}
       </main>
       <footer role="contentinfo">
@@ -22,6 +31,11 @@ export default function App({ children }) {
 }
 
 App.propTypes = {
+  activeId: PropTypes.string,
   children: PropTypes.node,
 };
+
+export default connect((state, ownProps) => ({
+  activeId: ownProps.params.id,
+}))(App);
 

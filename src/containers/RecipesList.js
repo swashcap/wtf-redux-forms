@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { Link } from 'react-router';
 
 import { fetchRecipes } from '../actions';
 
@@ -9,13 +9,6 @@ class RecipesList extends Component {
     this.props.dispatch(fetchRecipes());
   }
   
-  wat(event) {
-    event.preventDefault();
-    debugger;
-    push('/new');
-  }
-
-
   render() {
     const { activeId, recipes } = this.props;
 
@@ -24,29 +17,29 @@ class RecipesList extends Component {
         <div className="pure-menu pure-menu-horizontal">
           <ul className="pure-menu-list">
             {recipes.map(({ id, name }, index) => {
-              const path = `/edit/${id}`;
+              const className = 
+                `pure-menu-item ${id === activeId ? 'pure-menu-selected' : ''}`;
 
               return (
-                <li className="pure-menu-item" key={index}>
-                  <a
-                    className={`pure-menu-link ${id === activeId ? 'pure-menu-selected' : ''}`}
-                    onClick={this.wat.bind(this)}
+                <li className={className} key={index}>
+                  <Link
+                    className="pure-menu-link"
+                    to={`/edit/${id}`}
                   >
                     {name}
-                  </a>
+                  </Link>
                 </li>
               );
             })}
           </ul>
         </div>
-        <button
+        <Link
           className="pure-button"
           title="Create a new recipe"
           to="/new"
-          type="button"
         >
           New Recipe
-        </button>
+        </Link>
       </nav>
     );
   }
@@ -61,14 +54,5 @@ RecipesList.propTypes = {
   })).isRequired,
 };
 
-function mapStateToProps({ recipes }, ownProps) {
-  return {
-    // WTF, redux-router. WTF.
-    activeId: ((ownProps || {}).params || {}).id || '',
-    recipes,
-  };
-}
-
-export default connect(mapStateToProps)(RecipesList);
-
+export default connect(({ recipes }) => ({ recipes }))(RecipesList);
 
