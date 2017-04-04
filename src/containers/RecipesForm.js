@@ -9,7 +9,6 @@ import RecipeInputsField from '../components/RecipeInputsField';
 import TextField from '../components/TextField';
 import TextareaField from '../components/TextareaField';
 
-const DEFAULT_TYPE_ID = '100';
 const FORM_NAME = 'recipes';
 
 class RecipesForm extends Component {
