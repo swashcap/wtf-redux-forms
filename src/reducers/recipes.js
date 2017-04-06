@@ -31,7 +31,7 @@ const recipes = (state = SEED_RECIPES, action) => {
       });
     case RECIPES_UPDATE:
       return Object.assign({}, state, {
-        [action.payload.id]: omit(action.payload, ['id']),
+        [action.payload.id]: action.payload,
       });
     default:
       return state;

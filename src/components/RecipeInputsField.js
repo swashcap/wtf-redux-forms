@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Field, FieldArray } from 'redux-form';
+import toNumber from 'lodash/toNumber';
 
 import IngredientsField from './IngredientsField';
 import NumberField from './NumberField';
@@ -18,6 +19,7 @@ export default function RecipeInputsField({ recipeInputs, fields }) {
             <Field
               component={NumberField}
               name={name}
+              normalize={toNumber}
               {...recipeInput}
             />
           </li>

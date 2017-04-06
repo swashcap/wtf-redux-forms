@@ -1,9 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Field, FieldArray, formValueSelector, reduxForm } from 'redux-form';
-import cloneDeep from 'lodash/cloneDeep';
-import get from 'lodash/get';
-import { push } from 'react-router-redux';
+import { push as routerPush } from 'react-router-redux';
 
 import { saveRecipe, updateRecipe } from '../actions/';
 import RecipeTypesField from '../components/RecipeTypesField';
@@ -14,6 +12,10 @@ import TextareaField from '../components/TextareaField';
 import './RecipesForm.css';
 
 const FORM_NAME = 'recipes';
+
+const getDefaultValue = recipeInput => (
+  'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
+);
 
 function RecipesForm({
   array: {
@@ -35,7 +37,7 @@ function RecipesForm({
       types.find(({ id }) => id === newValue).recipeInputs.forEach(
         (recipeInput) => push(
           'recipeInputs',
-          'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
+          getDefaultValue(recipeInput)
         )
       );
     }
@@ -126,27 +128,32 @@ const mapStateToProps = (
   const { recipes, types } = state;
   const formValues = selector(state, 'recipeInputs', 'type');
   const initialValues = recipeId && recipeId in recipes ?
-    recipes[recipeId] :
+    {
+      description: recipes[recipeId].description,
+      name: recipes[recipeId].name,
+      recipeInputs: [...recipes[recipeId].recipeInputs],
+      type: recipes[recipeId].type,
+    } :
     {};
+  let typeId;
 
   if (formValues && formValues.type) {
-    initialValues.type = formValues.type;
+    typeId = formValues.type;
   } else if (!initialValues.type) {
-    initialValues.type = '2'; // Default type id
+    typeId = '2'; // Default type id
+  } else {
+    typeId = initialValues.type;
   }
 
-  const recipeInputs = get(
-    types.find(({ id }) => id === initialValues.type),
-    'recipeInputs',
-    []
-  );
+  const recipeInputs =
+    (types.find(({ id }) => id === typeId) || {}).recipeInputs || [];
 
-  // Always re-initialize `recipeInputs`
-  initialValues.recipeInputs = recipeInputs.map((recipeInput) => (
-    'defaultValue' in recipeInput ? recipeInput.defaultValue : ''
-  ));
+  // Re-initialize `recipeInputs` if the type changes
+  if (typeId && initialValues.type !== typeId) {
+    initialValues.type = typeId;
+    initialValues.recipeInputs = recipeInputs.map(getDefaultValue);
+  }
 
-  // debugger;
   return {
     initialValues,
     recipeInputs,
@@ -155,20 +162,21 @@ const mapStateToProps = (
 };
 
 export default connect(mapStateToProps)(reduxForm({
-  // enableReinitialize: true,
+  enableReinitialize: true,
   form: FORM_NAME,
-  keepDirtyOnReinitialize: true,
+  // keepDirtyOnReinitialize: true,
   onSubmit(values, dispatch, props) {
     const {
       params: { id },
     } = props;
+    const newValues = Object.assign({ id }, values);
 
     if (id) {
-      dispatch(updateRecipe(Object.assign({ id }, cloneDeep(values))));
+      dispatch(updateRecipe(newValues));
     } else {
-      dispatch(saveRecipe(cloneDeep(values)));
+      dispatch(saveRecipe(newValues));
     }
-    dispatch(push('/'));
+    dispatch(routerPush('/'));
   },
 })(RecipesForm));
 
